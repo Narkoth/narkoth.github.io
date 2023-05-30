@@ -1,6 +1,12 @@
 .center {
-    margin: auto;
-    width: 50%;
+    display: flexbox;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     border: 5px solid white;
     padding: 10px;
+}
+
+.bbackground {
+    background-color: bisque;
 }

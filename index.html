@@ -1,11 +1,78 @@
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="styles.css">
-<body>
+
+<body class="bbackground">
     <div class="center">
-        <h2>Nation Builder</h2>
-        <p>I'm hosted with GitHub Pages.</p>
+        <h1>Content Creation Tools for an Ongoing Project</h1>
+        <br>
+        <hr>
+        <div>
+            <h2>Nation Builder</h2>
+            <p>Fill out the following form to create the necessary files for a nation to appear in-game</p>
+            <form>
+                <label for="n_id">Nation's ID:</label><br><br>
+                <input type="text" id="n_id" name="n_id"><br><br>
+
+                <label for="n_core_name">Nation's Core Name:</label><br><br>
+                <input type="text" id="n_core_name" name="n_core_name"><br><br>
+
+                <label for="n_rgb">RGB Color (Seperate each with an "x" so: "132x57x98"):</label><br><br>
+                <input type="text" id="n_rgb" name="n_rgb"><br><br>
+
+                <label for="n_primary_culture">Primary Culture ID:</label><br><br>
+                <input type="text" id="n_primary_culture" name="n_primary_culture"><br><br>
+
+                <label for="n_accepted_cultures">Accepted Cultures (Seperate each with a comma: caer_culture,
+                    castorian_culture):</label><br><br>
+                <input type="text" id="n_accepted_cultures" name="n_accepted_cultures"><br><br>
+
+                <label for="n_rejected_cultures">Rejected Cultures (Seperate each with a comma: caer_culture,
+                    castorian_culture):</label><br><br>
+                <input type="text" id="n_rejected_cultures" name="n_rejected_cultures"><br><br>
+                <br> <br>
+                <button onclick="saveNationJSON()">Export Data to Local JSON File</button>
+            </form>
+        </div>
+        <br>
+        <hr>
     </div>
 </body>
+
+<script>
+    function saveNationJSON() {
+        //Inspired from: https://stackoverflow.com/questions/34156282/how-do-i-save-json-to-local-text-file
+        const accepted_cultures_array = document.getElementById('n_accepted_cultures').value.split(" ");
+        const actively_rejected_cultures_array = document.getElementById('n_rejected_cultures').value.split(" ");
+
+        const nation_data = {
+            id: document.getElementById('n_id').value,
+            color: document.getElementById('n_rgb').value,
+            main_ruler: "",
+            secondary_ruler: "",
+            perm_capital: "",
+            primary_culture: document.getElementById('n_primary_culture').value,
+            techs_researched: [],
+            accepted_cultures: accepted_cultures_array,
+            actively_rejected_cultures: actively_rejected_cultures_array,
+            legal_provinces: [],
+            currently_occupied_provinces: [],
+            claimed_provinces: [],
+            core_provinces: [],
+            unique_characters: []
+        };
+
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([JSON.stringify(nation_data, null, 2)], {
+            type: "text/plain"
+        }));
+        const file_name = document.getElementById('n_core_name').value + ".json";
+        a.setAttribute("download", file_name);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
+    }
+</script>
 
 </html>
